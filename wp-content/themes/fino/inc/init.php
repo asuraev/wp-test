@@ -139,7 +139,8 @@ function release_attributes_meta_box($post) {
 
 function track_attributes_meta_box( $post ) {
 	$post_type_object = get_post_type_object( $post->post_type );
-  $releases = wp_dropdown_pages(['post_type' => 'music-release', 'authors' => (!is_admin() ? [get_current_user_id()] : ''), 'selected' => $post->post_parent, 'name' => 'parent_id', 'sort_column'=> 'menu_order, post_title', 'echo' => 0 ]);
+  $user_roles = (array) wp_get_current_user()->roles;
+  $releases = wp_dropdown_pages(['post_type' => 'music-release', 'authors' => (!in_array('administrator', $user_roles) ? [get_current_user_id()] : ''), 'selected' => $post->post_parent, 'name' => 'parent_id', 'sort_column'=> 'menu_order, post_title', 'echo' => 0 ]);
   ?>
   <p>
 		<label><?=__( 'Track Length:', 'fino' )?></label><br />
@@ -182,4 +183,19 @@ function post_remove() {
 }
 
 add_action('admin_menu', 'post_remove'); 
+
+
+// Co-Authors plugin support
+add_filter('coauthors_supported_post_types' , function($post_types){
+  $post_types[] = 'music-release';
+  return $post_types;
+});
+
+add_filter('coauthors_plus_edit_authors', function($can_set_authors){
+  $user_roles = (array) wp_get_current_user()->roles;
+  if (in_array('author', $user_roles)) {
+    return true;
+  }
+  return $can_set_authors;
+});
 
