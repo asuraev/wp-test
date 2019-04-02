@@ -3707,3 +3707,8 @@ ul, ol {
 ol {
     list-style: decimal;
 }
+
+.release-cover {
+  width: 80px;
+  height: 80px;
+}

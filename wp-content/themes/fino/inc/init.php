@@ -24,7 +24,8 @@ function register_music_post_types() {
     'labels'                => $labels,
     'hierarchical'          => true,
     'public'                => true,
-    'menu_icon'             => 'dashicons-playlist-audio'
+    'menu_icon'             => 'dashicons-playlist-audio',
+    'supports'              => ['title', 'editor', 'author', 'thumbnail']
   );
   register_post_type( 'music-release', $args );
   
