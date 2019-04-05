@@ -34,14 +34,40 @@
   }
   
 
-  $releases = new WP_Query([
+  $query_args = [
     'post_type' => 'music-release',
     'posts_per_page' => $posts_per_page,
     'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
     'orderby' => $orderby,
     'order' => $orderway,
     'meta_key' => $metakey,
-  ]);
+    'tax_query' => [],
+    'meta_query' => [],
+  ];
+  
+  $filters = getFilters();
+  foreach ($filters as $filter_key => $filter) {
+    if (is_array($filter)) {
+      foreach ($filter as $slug) {
+        $query_args['tax_query'][] = [
+          'taxonomy' => $filter_key, 
+          'field' => 'slug',
+          'terms' => $slug
+        ];
+      }
+    }
+    else {
+      $query_args['meta_query'][] = [
+          'key'     => 'year',
+          'value'   => [$filter, $filter + 9],
+          'type'    => 'numeric',
+          'compare' => 'BETWEEN',
+      ];
+    }
+  }
+  
+  $releases = new WP_Query($query_args);
+  
   $wp_query = NULL;
   $wp_query = $releases;
 ?>
@@ -87,6 +113,8 @@
           $genre_str = implode(', ', array_map(function($term){ return $term->name;}, $genre));
           $style = wp_get_post_terms(get_the_ID(), 'style');
           $style_str = implode(', ', array_map(function($term){ return $term->name;}, $style));
+          $country = wp_get_post_terms(get_the_ID(), 'country');
+          $country_str = implode(', ', array_map(function($term){ return $term->name;}, $country));
         ?>
         <?php if (!empty(wp_get_post_terms(get_the_ID(), 'format'))) :?>
           <span class="format"><?= wp_get_post_terms(get_the_ID(), 'format')[0]->name?></span>
@@ -94,7 +122,7 @@
         <span class="genre"><?=trim($genre_str.', '.$style_str, ', ')?></span>
       </p>
       <p>
-        <?= trim(get_post_meta(get_the_ID(), 'country', true).', '.get_post_meta(get_the_ID(), 'year', true), ', ')?>
+        <?= trim($country_str.', '.get_post_meta(get_the_ID(), 'year', true), ', ')?>
       </p>
     </td>
   </tr>
