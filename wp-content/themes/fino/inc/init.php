@@ -12,6 +12,7 @@ if ( is_admin() ) {
 
 require get_template_directory().'/inc/widgets.php';
 require get_template_directory().'/inc/post-types.php';
+require get_template_directory().'/inc/recently-visited.php';
 
 // Remove posts from the menu 
 function post_remove() { 
@@ -52,5 +53,18 @@ function getFilters() {
     }
   }
   return $filter;
-} 
+}
+
+/**
+ * Get taxonomy terms as string
+ * 
+ * @param int $postID
+ * @param string $taxonomy
+ * 
+ * @return array
+ */
+function termsList($postID, $taxonomy) {
+  $terms = wp_get_post_terms($postID, $taxonomy);
+  return implode(', ', array_map(function($term){ return $term->name;}, $terms));
+}
 

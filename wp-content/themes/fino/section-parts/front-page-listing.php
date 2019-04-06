@@ -99,7 +99,9 @@
       <?php if(has_post_thumbnail()) :?>
         <?php the_post_thumbnail('thumbnail');?>
       <?php else: ?>
-        <i class="fa fa-music"></i>
+        <div class="thumb-placeholder">
+          <i class="fa fa-music"></i>
+        </div>
       <?php endif;?>
       </a>
     </td>
@@ -108,21 +110,13 @@
         <a href="<?= get_permalink()?>"><?php the_title();?></a> - <a href="<?= get_author_posts_url(get_the_author_meta('ID'))?>"><?php the_author()?></a>
       </p>
       <p>
-        <?php 
-          $genre = wp_get_post_terms(get_the_ID(), 'genre');
-          $genre_str = implode(', ', array_map(function($term){ return $term->name;}, $genre));
-          $style = wp_get_post_terms(get_the_ID(), 'style');
-          $style_str = implode(', ', array_map(function($term){ return $term->name;}, $style));
-          $country = wp_get_post_terms(get_the_ID(), 'country');
-          $country_str = implode(', ', array_map(function($term){ return $term->name;}, $country));
-        ?>
         <?php if (!empty(wp_get_post_terms(get_the_ID(), 'format'))) :?>
           <span class="format"><?= wp_get_post_terms(get_the_ID(), 'format')[0]->name?></span>
         <?php endif;?>
-        <span class="genre"><?=trim($genre_str.', '.$style_str, ', ')?></span>
+          <span class="genre"><?=trim(termsList(get_the_ID(), 'genre').', '.termsList(get_the_ID(), 'style'), ', ')?></span>
       </p>
       <p>
-        <?= trim($country_str.', '.get_post_meta(get_the_ID(), 'year', true), ', ')?>
+        <?= trim(termsList(get_the_ID(), 'country').', '.get_post_meta(get_the_ID(), 'year', true), ', ')?>
       </p>
     </td>
   </tr>

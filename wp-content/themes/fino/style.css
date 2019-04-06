@@ -3712,3 +3712,34 @@ ol {
   width: 80px;
   height: 80px;
 }
+
+.discography-tabs {
+  margin-top: 20px;
+}
+.discography-tabs .tab-pane {
+  padding-top: 20px;
+}
+
+.blog table th,
+.blog table td {
+  text-align: left;
+}
+
+.blog table th,
+.discography-tabs .tab-pane .format {
+  background: #e7e6e4;
+  font-weight: bold;
+  text-align: left;
+}
+
+.thumb-placeholder {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  background-color: #E6EAED;
+  color: #9B9B9B;
+  font-size: 2em;
+}
