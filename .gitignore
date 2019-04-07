@@ -19,6 +19,7 @@ wp-content/*
 !README.md
 !CHANGELOG.md
 !composer.json
+!db/
 
 # track favicon files, if they exist
 !android-chrome-*.png

@@ -127,4 +127,24 @@
             </div>
         </div>
         <?php } ?>
+          <div class="bottom-head d-none d-lg-block">
+            <div class="container clearfix">
+                <div class="fino-menu">
+                    <nav class="menubar">
+                        <?php wp_nav_menu( 
+                            array(
+                               'container'        => 'ul', 
+                               'theme_location'    => 'primary', 
+                               'menu_class'        => 'menu', 
+                               'items_wrap'        => '<ul class="menu-wrap clearfix">%3$s</ul>',
+                               'fallback_cb'       => 'fino_wp_bootstrap_navwalker::fallback',
+                                'walker'            => new fino_wp_bootstrap_navwalker()
+                            )
+                          ); 
+                        ?>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
     </header>

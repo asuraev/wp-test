@@ -49,13 +49,15 @@ class RecentViewed {
               <div class="item recentviewed text-center">
                 <a href="<?php echo $permalink; ?>">
                   <?php if (has_post_thumbnail($rv_post->ID)) : ?>
-                    <?= get_the_post_thumbnail($rv_post->ID, 'thumbnail'); ?>
+                    <div class="thumb-wrapper">
+                      <?= get_the_post_thumbnail($rv_post->ID, 'thumbnail'); ?>
+                    </div>
                   <?php else : ?>
                     <div class="thumb-placeholder">
                       <i class="fa fa-music"></i>
                     </div>
                   <?php endif; ?>
-                  <?= apply_filters('the_title', $rv_post->post_title, $rv_post->ID );?>
+                  <?= apply_filters('the_title', $rv_post->post_title, $rv_post->ID );?> - 
                   <?= get_post_meta($rv_post->ID, 'year', true);?>
                 </a>
               </div>

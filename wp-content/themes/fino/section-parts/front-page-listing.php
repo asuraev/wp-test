@@ -5,7 +5,7 @@
     $posts_per_page = $_REQUEST['posts_per_page'];
   }
   else {
-    $posts_per_page = 2;
+    $posts_per_page = 10;
   }
   
   if(isset($_REQUEST['sort'])) {
@@ -75,9 +75,9 @@
   <form name="frm" class="pb-30" method="get" action="">
     <label for="posts_per_page"><?php _e('Per page:', 'fino')?></label>
     <select onchange="document.frm.submit()" name="posts_per_page" id="posts_per_page">
-      <option value="1" <?= (1 == $posts_per_page ? 'selected="selected"' : '') ?>>1</option>
-      <option value="2" <?= (2 == $posts_per_page ? 'selected="selected"' : '') ?>>2</option>
       <option value="10" <?= (10 == $posts_per_page ? 'selected="selected"' : '') ?>>10</option>
+      <option value="50" <?= (50 == $posts_per_page ? 'selected="selected"' : '') ?>>50</option>
+      <option value="100" <?= (100 == $posts_per_page ? 'selected="selected"' : '') ?>>100</option>
     </select>
     <label for="sort"><?php _e('Sort', 'fino')?></label>
     <select onchange="document.frm.submit()" name="sort" id="sort">
@@ -106,8 +106,20 @@
       </a>
     </td>
     <td class="release-body">
+      <?php 
+        $coauthors = get_coauthors();
+        $coauthors = array_udiff($coauthors, [get_userdata($post->post_author)], function($a, $b){ // remove current author from co-authors list
+          return $a->id - $b->id;
+        });
+      ?>
       <p>
         <a href="<?= get_permalink()?>"><?php the_title();?></a> - <a href="<?= get_author_posts_url(get_the_author_meta('ID'))?>"><?php the_author()?></a>
+        <?php if (!empty($coauthors)):?>
+          <?php _e('feat.', 'fino');?>
+          <?php foreach ($coauthors as $coauthor) :?>
+            <a href="<?= get_author_posts_url($coauthor->ID)?>"><?= $coauthor->display_name?></a>&nbsp;
+          <?php endforeach;?>
+        <?php endif;?>
       </p>
       <p>
         <?php if (!empty(wp_get_post_terms(get_the_ID(), 'format'))) :?>

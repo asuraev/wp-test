@@ -68,3 +68,23 @@ function termsList($postID, $taxonomy) {
   return implode(', ', array_map(function($term){ return $term->name;}, $terms));
 }
 
+
+function register_my_menu() {
+  register_nav_menu('primary', __( 'Header Menu' ));
+}
+add_action( 'init', 'register_my_menu' );
+
+function add_login_logout_register_menu( $items, $args ) {
+	if ( $args->theme_location != 'primary' ) {
+		return $items;
+	}
+	if ( is_user_logged_in() ) {
+		$items .= '<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item"><a title="'.__( 'Log Out' ).'" class="menu-link" href="'.esc_url(wp_logout_url('')).'">'.__( 'Log Out' ).'</a></li>';
+	} else {
+		$items .= '<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item"><a title="'.__( 'Log In' ).'" class="menu-link" href="'.esc_url(wp_login_url('')).'">'.__( 'Log In' ).'</a></li>';
+		$items .= '<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item"><a title="'.__( 'Sign Up' ).'" class="menu-link" href="'.esc_url(wp_registration_url()).'">'.__( 'Sign Up' ).'</a></li>';//wp_register('<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item">', '</li>', false);//'' . __( 'Sign Up' ) . '';
+	}
+	return $items;
+}
+
+add_filter( 'wp_nav_menu_items', 'add_login_logout_register_menu', 199, 2 );

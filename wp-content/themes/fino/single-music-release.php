@@ -18,7 +18,20 @@
           <?php endif;?>
         </div>
         <div class="col-sm-11">
-          <h2><a href="<?= get_author_posts_url($post->post_author)?>"><?php the_author()?></a> - <?= the_title();?></h2>
+          <h2><a href="<?= get_author_posts_url($post->post_author)?>"><?php the_author()?></a>
+            <?php 
+              $coauthors = get_coauthors();
+              $coauthors = array_udiff($coauthors, [get_userdata($post->post_author)], function($a, $b){ // remove current author from co-authors list
+                return $a->id - $b->id;
+              });
+            ?>
+            <?php if (!empty($coauthors)):?>
+              <?php _e('feat.', 'fino');?>
+              <?php foreach ($coauthors as $coauthor) :?>
+                <a href="<?= get_author_posts_url($coauthor->ID)?>"><?= $coauthor->display_name?></a>&nbsp;
+              <?php endforeach;?>
+            <?php endif;?>
+            - <?= the_title();?></h2>
         </div>
       </div>
       <dl>

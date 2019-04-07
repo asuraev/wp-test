@@ -3743,3 +3743,29 @@ ol {
   color: #9B9B9B;
   font-size: 2em;
 }
+
+.selected-filters li {
+  margin-bottom: 3px;
+}
+.selected-filters a {
+  display: block;
+  color: #fff;
+  background-color: #72a3d8;
+  border-radius: 3px;
+  padding: 3px 5px;
+}
+.selected-filters a:hover {
+  background-color: #326FB2;
+}
+.selected-filters a i {
+  line-height: 20px;
+}
+
+.thumb-wrapper {
+  max-width: 150px;
+  margin: 0 auto;
+}
+.owl-carousel .thumb-placeholder {
+  width: 150px;
+  height: 150px;
+}
