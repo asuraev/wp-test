@@ -20,6 +20,8 @@ wp-content/*
 !CHANGELOG.md
 !composer.json
 !db/
+!.htaccess
+!wp-config-default.php
 
 # track favicon files, if they exist
 !android-chrome-*.png
